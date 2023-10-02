@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://cimwhyema17n6"]
+
+[ext_resource type="Script" path="res://scenes/screens/StartGameScreen/start_screen.gd" id="1_wxax6"]
+
+[node name="Start screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wxax6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.501961, 0.239216, 0.0901961, 1)
+
+[node name="StartGameBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -60.0
+offset_right = 48.0
+offset_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start Game"
+
+[node name="SettingsBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -15.5
+offset_right = 35.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Settings"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -45.0
+offset_top = 150.0
+offset_right = 45.0
+offset_bottom = 176.0
+grow_horizontal = 2
+text = "BattleForge"
+
+[connection signal="pressed" from="StartGameBtn" to="." method="_on_start_game_btn_pressed"]

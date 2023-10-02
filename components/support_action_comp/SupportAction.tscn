@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bk004xnrbax3d"]
+
+[ext_resource type="Script" path="res://components/support_action_comp/SupportAction.gd" id="1_yjral"]
+
+[node name="SupportAction" type="Area2D" groups=["support_actions"]]
+script = ExtResource("1_yjral")
+
+[node name="SupportConnnection" type="Line2D" parent="."]
+z_index = 1000
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
