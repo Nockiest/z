@@ -15,7 +15,7 @@ var remain_movement:int = base_movement:
 		update_stats_bar()
  
 var attack_resistances =  {"base_resistance":  0.1  }  
-@onready var center = $CollisionShape2D.global_position +$CollisionShape2D.shape.extents/2 
+@onready var center = $CollisionShape2D.global_position #+$CollisionShape2D.shape.extents/2 
 @onready var size = $CollisionShape2D.shape.extents * 2
 @onready var global_start_turn_position :Vector2 = get_global_transform().get_origin() # Vector2((position[0]+round(size[0]/2)),(position[1]+round(size[1]/2)))
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
@@ -26,7 +26,16 @@ var color: Color # = Color(str(Globals.cur_player))
 var original_position = position  # Store the current position
 var unit_name: String = "default"
 var start_hp: int = 2
-var is_newly_bought = true
+var is_newly_bought = true:
+	get:
+		return is_newly_bought
+	set(new_value):
+		is_newly_bought = new_value
+		print(new_value)
+		if new_value == false:
+			var tween = get_tree().create_tween()
+			tween.tween_property($ColorRect, "modulate", Color(1,1,1), 0.2)
+			tween.tween_property($ColorRect, "modulate",   color, 0.2)
  
 func _ready():
 	# The code here has to come after the code in th echildren compoennts
@@ -35,6 +44,9 @@ func _ready():
 	$HealthComponent/HealthBar.value = start_hp
 	$HealthComponent.hp = start_hp
 	$movement_comp.parent_size =  size 
+	center = $CollisionShape2D.global_position +  size/2 
+	print(global_position,self )
+	$ActionComponent.position =   to_local(global_position + Vector2(25,25))# to_local(center) 
 	update_stats_bar()
 	emit_signal("bought", cost)
 	if action_component != null:
@@ -106,15 +118,17 @@ func process_input():
 func process_unit_placement():
 	if Input.is_action_just_pressed("left_click"): 
 		if Globals.hovered_unit != null:
-			print(Globals.hovered_unit, "POSITION CANNOT BE SET")
+			print(Globals.hovered_unit == null, Globals.hovered_unit, "POSITION CANNOT BE SET")
 			return
 		var in_valid_buy_area = false
 		## check wheter it is being placed inside the buy bar
 		for buy_area in buy_areas:
+			print("COLORS",Color(buy_area.team) , color, buy_area.units_inside)
 			if Color(buy_area.team) != color:
 				continue  
 			if self not in buy_area.units_inside:
 				continue
+			print("IN BUY AREA")
 			in_valid_buy_area = true
 		## check wheter it is placed in and of the occupied cities
 		for town in get_tree().get_nodes_in_group("towns"):
@@ -127,7 +141,7 @@ func process_unit_placement():
 				in_valid_buy_area = true
 		
 		for river_segment in get_tree().get_nodes_in_group("river_segments"):
-			print(river_segment.get_node("Area2D"), river_segment.get_node("Area2D").get_overlapping_areas ( ))
+#			print(river_segment.get_node("Area2D"), river_segment.get_node("Area2D").get_overlapping_areas ( ))
 			for area in  river_segment.get_node("Area2D").get_overlapping_areas ( ):
 				if area == $CollisionArea:
 					print(area, " OVERLAPS")
@@ -139,7 +153,7 @@ func process_unit_placement():
 			is_newly_bought = false
 			Globals.placed_unit = null
 			return
-		print(Globals.hovered_unit, "POSITION CANNOT BE SET")
+		print(Globals.hovered_unit, in_valid_buy_area, "POSITION CANNOT BE SET")
  
 
 	if Input.is_action_just_pressed("right_click"): 
@@ -244,7 +258,7 @@ func _on_tree_exiting():
 	death_image.global_position = center
 	get_tree().get_root().add_child(death_image)
 
-func _on_collision_area_area_entered(area):
+func _on_collision_area_area_entered(_area):
 	print("ENTERED AREA")
 
  

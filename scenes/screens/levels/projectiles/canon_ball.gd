@@ -14,7 +14,6 @@ func _on_area_entered(area):
  
 	if parent.has_node("HealthComponent"):
 		parent.get_node("HealthComponent").hit(1)
-#		queue_free()
  
 func _process(delta):
 	super._process(delta)
@@ -24,5 +23,4 @@ func _process(delta):
 func stop_movement():
 	super.stop_movement()
 	rotation_speed = 0
-#	if color == parent.color:
-#		return chci aby tu fungoval firendly fire
+ 

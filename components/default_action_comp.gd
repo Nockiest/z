@@ -19,8 +19,10 @@ func try_attack( ):
 		return  "FAILED"
 	var distance =  global_position.distance_to(Globals.hovered_unit.global_position) 
 	print("CAN ATTACK ", distance," ", attack_range)
-	if distance > attack_range:
+	if not Globals.hovered_unit in units_in_action_range:
 		return "FAILED"
+#	if distance > attack_range:
+#		return "FAILED"
 	## I will add this to the try_attack component later too
 	print("TOGGLING")
 	toggle_action_screen()

@@ -22,24 +22,25 @@ func deselect_supported_entity():
 
 func check_can_support():
  
-	if Globals.hovered_unit == get_parent() or Globals.hovered_unit == null:
-		print(get_parent()," 1")
+	if Globals.hovered_unit == owner or Globals.hovered_unit == null:
+		print(owner," 1")
 		deselect_supported_entity()
 		return false
-	if Globals.hovered_unit.color != get_parent().color:
-		print(get_parent()," 2")
+	print( Globals.hovered_unit,owner,   )
+	if Globals.hovered_unit.color != owner.color:
+		print(owner," 2")
 		return false
-	if Globals.action_taking_unit  != get_parent():
-		print(get_parent()," 4")
+	if Globals.action_taking_unit  != owner:
+		print(owner," 4")
 		return false
-	if get_parent().center.distance_to(Globals.hovered_unit.center) > support_range:
-		print(get_parent()," 5")
+	if owner.center.distance_to(Globals.hovered_unit.center) > support_range:
+		print(owner," 5")
 		return false
 	return true
 
 func choose_supported():
 	if not check_can_support(): 
-#		deselect_supported_entity()
+		deselect_supported_entity()
 		return
  
 	supported_entity = Globals.hovered_unit
@@ -50,7 +51,6 @@ func choose_supported():
 ## currently when i want to provide a buff on the enemy turn, it wouldnt work
 func provide_buffs():
 	if area_support:
-		print("AREA SUPPORT")
 		return
  
 	if owner.color  != Color(Globals.cur_player):
@@ -73,7 +73,7 @@ func draw_line_to_supported_entity():
 	$SupportConnnection.clear_points()  # Clear any existing points
 	if supported_entity != null:
 		# Convert global positions to Line2D's local space
-		var local_start = $SupportConnnection.to_local(get_parent().center)
+		var local_start = $SupportConnnection.to_local(owner.center)
 		var local_end = $SupportConnnection.to_local( supported_entity.center  )  
 
 		$SupportConnnection.add_point(local_start)  # Add the parent's position as a point
@@ -86,6 +86,7 @@ func draw_line_to_supported_entity():
 			return
 
 func _process(_delta):
+	super._process(_delta)
 	draw_line_to_supported_entity()
 #
 #func toggle_action_screen():

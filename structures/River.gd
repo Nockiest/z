@@ -13,23 +13,7 @@ var itersecting_point_index:int
 var points:Array = []
  
 #var control_point  = Vector2(50, 0)
-func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  num_segments:int):
-	var t:float = 0
-	var random_point_1 = Vector2(randf_range(start.x, end.x), randf_range(start.y, end.y))
  
-	while t <= 1:
-		# Define the control points for the Bézier curve 
-#		var control_point_2 = Vector2(50, 100)
-		var q0 = start.lerp(control_point, t)
-		var q1 = control_point.lerp(end , t)
-		var point = q0.lerp(q1, t)
-		# Generate two random points between the start and end points
-		points.append(point)
-#		print(line.points.size)
-		if len( points) >= 2:
-			add_river_segment(points[len( points )-1],  points[len( points)-2],true)
-		t += 1.0/num_segments
-		
 
 func add_river_segment(segment_start, segment_end,  listen_for_river_collision:bool ):
 	var river_segment_instance = river_segment_scene.instantiate() as Node2D

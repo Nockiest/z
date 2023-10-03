@@ -1,7 +1,7 @@
+class_name Medic
 extends SupportUnit
 
- 
 func _ready():
-	support_action = $ActionComponent/HealingAction  
+	action_component = $ActionComponent/HealingAction  
 	unit_name = "medic"
 	super._ready()

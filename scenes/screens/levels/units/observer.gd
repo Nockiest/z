@@ -1,7 +1,8 @@
+class_name Observer
 extends SupportUnit
 
 func _ready():
-	support_action =$ActionComponent/ObserveAction  
+	action_component =$ActionComponent/ObserveAction  
 	unit_name = "observer"
 	super._ready()
  

@@ -9,6 +9,9 @@ var hp:int  :
 	set(value):  # Setter function for hp
 		var prev_hp = hp
 		hp = min(value, max_hp)
+		print("PREV_HP", prev_hp)
+		if prev_hp == 0:
+			return
 		if prev_hp != hp:
 			emit_signal("hp_changed", hp, prev_hp)  # Emit signal whenever hp changes
 		if hp <= 0:

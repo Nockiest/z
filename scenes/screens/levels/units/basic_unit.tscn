@@ -7,12 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://bsghedd31qfoa" path="res://components/movement_comp/movement_comp.tscn" id="6_0pp86"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3ojo"]
-size = Vector2(49, 48)
+size = Vector2(50, 49)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_840qd"]
-size = Vector2(49, 48)
+size = Vector2(49, 48.5)
 
-[node name="basic_unit" type="StaticBody2D" groups=["living_units"]]
+[node name="basic_unit" type="AnimatableBody2D" groups=["living_units"]]
 z_index = 2
 collision_mask = 25
 input_pickable = true
@@ -20,8 +20,8 @@ script = ExtResource("1_vdjhd")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = 10
-offset_right = 49.0
-offset_bottom = 48.0
+offset_right = 50.0
+offset_bottom = 50.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 10
@@ -35,9 +35,9 @@ z_index = 4096
 layout_mode = 3
 anchors_preset = 0
 offset_left = 1.0
-offset_top = 49.0
+offset_top = 50.0
 offset_right = 1.0
-offset_bottom = 49.0
+offset_bottom = 50.0
 
 [node name="ColorRect" type="ColorRect" parent="UnitStatsBar"]
 custom_minimum_size = Vector2(0, 50)
@@ -67,23 +67,23 @@ theme_override_font_sizes/font_size = 10
 text = "Attacks:"
 
 [node name="HealthComponent" parent="." instance=ExtResource("4_oq3j3")]
-visible = false
 position = Vector2(-8, -8)
 
 [node name="CollisionArea" type="Area2D" parent="."]
 visibility_layer = 61
+collision_mask = 25
 script = ExtResource("4_gcuuy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
 visibility_layer = 25
-position = Vector2(24.5, 24)
+position = Vector2(25, 25.5)
 shape = SubResource("RectangleShape2D_n3ojo")
 debug_color = Color(0.835294, 0.301961, 0.623529, 0.419608)
 
 [node name="movement_comp" parent="." instance=ExtResource("6_0pp86")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(24.5, 24)
+position = Vector2(25, 25)
 shape = SubResource("RectangleShape2D_840qd")
 
 [node name="ActionComponent" type="Node2D" parent="."]

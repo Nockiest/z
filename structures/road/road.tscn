@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://uec1gsjgb786"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mqhyp"]
+
+[node name="road" type="Node2D"]
+z_index = 5
+
+[node name="Line2D" type="Line2D" parent="."]
+z_index = 5
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_mqhyp")

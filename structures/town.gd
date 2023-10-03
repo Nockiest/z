@@ -6,7 +6,8 @@ var num_houses:int = 5
 # Called when the node enters the scene tree for the first time.
 var units_inside: Array
 var team_alligiance 
-
+var connected_roads:int = 0
+var connected_towns: Array = []
 func _process(_delta):
 	if  Globals.placed_unit == null:
 		$ColorRect.modulate = Color("#8B0000") 
@@ -49,15 +50,23 @@ func is_area_occupied(area):
  
  
 func _on_area_entered(area): 
-	if area is Town:
-		print("HAD TO DESTROY ITSELF BECAUSE OVERLAPED ANOTHER TOWN")
-		queue_free()
+#	if area is Town:
+#		print("HAD TO DESTROY ITSELF BECAUSE OVERLAPED ANOTHER TOWN")
+#		queue_free()
 	if not(area is UnitsMainCollisionArea):
 		return
 	if not (area.get_parent() is BattleUnit):
 		return
 	print("UNIT ENTERED TOWN ",  area.get_parent())
 	units_inside.append(area.get_parent())
+	
+func check_overlaps_other_towns():
+	for town in get_tree().get_nodes_in_group("towns"):
+		print("XXX", town.get_overlapping_areas())
+		if town.get_overlapping_areas().has(self):
+			queue_free()
+func _ready():
+	check_overlaps_other_towns()
 
 func _on_area_exited(area):
  
@@ -71,6 +80,7 @@ func _on_area_exited(area):
 func make_next_turn_calculations():
 	check_who_occupied()
 	change_edge_color()
+
 func check_who_occupied():
 	var blue_count = 0
 	var red_count = 0
@@ -95,4 +105,24 @@ func change_edge_color():
 		$Edge.color = Color("red")	
 	else:
 		$Edge.color = Color("white")
+		
+func connect_to_other_towns():
+	var towns = get_tree().get_nodes_in_group("towns")
+	var town_distances = [] ##array of arrays with the distance and the town
+	for town in towns:
+		if town == self:
+			continue
+		if town.connected_roads > 2:
+			continue
+#			print(town, " HAS TO MANY ROADS LEADING TO IT")
+		town_distances.append([ position.distance_to(town.position), town])
+		town_distances.sort()
+	for i in range(min(2, len(town_distances))):
+#		print(town_distances[i][1])
+		town_distances[i][1].connected_roads += 1
+		connected_towns.append(town_distances[i][1])
+		connected_roads += 1
+ 
+		
+			
 		

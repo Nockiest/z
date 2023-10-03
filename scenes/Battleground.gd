@@ -12,6 +12,7 @@ var player_scene: PackedScene = preload("res://player.tscn")
 var supply_depo_scene: PackedScene = preload("res://structures/supply_depo.tscn")
 var river_scene: PackedScene = preload("res://structures/river.tscn")
 var forrest_scene:PackedScene = preload("res://structures/forrest/forrest.tscn")
+var road_scene:PackedScene = preload("res://structures/road/road.tscn")
 #this could cause potential problems in the future
 @onready var tenders = get_tree().get_nodes_in_group("player_tenders")
 @onready var players = get_tree().get_nodes_in_group("players")
@@ -31,18 +32,22 @@ func _ready():
 	set_process_input(true)
 	put_unit_into_teams()
  
-#	for i in range(7):
-#		var town_instance = town_scene.instantiate() as Area2D
-#		town_instance.global_position = Vector2(randf_range(100, get_viewport().size.x-100), randf_range(100, get_viewport().size.y-100))
-#		$Structures.add_child(town_instance)
-#	for town in get_tree().get_nodes_in_group("towns"):
-#		print(town.get_overlapping_areas())
-#	for i in range(2):
-#		var supply_depo_instance = supply_depo_scene.instantiate() as Area2D
-#		supply_depo_instance.global_position = Vector2(randf_range(0, get_viewport().size.x), randf_range(0, get_viewport().size.y))
-#		$Structures.add_child(supply_depo_instance)
-	var all_segments = []
+	for i in range(7):
+		var town_instance = town_scene.instantiate() as Area2D
+		town_instance.global_position = Vector2(randf_range(100, get_viewport().size.x-100), randf_range(100, get_viewport().size.y-100))
+		$Structures.add_child(town_instance)
+	for town in get_tree().get_nodes_in_group("towns"):
+		town.connect_to_other_towns()
+	for town in get_tree().get_nodes_in_group("towns"):
+		print("CONNECTING", town.connected_towns)
+		for other_town in town.connected_towns:
+			instantiate_roads(Utils.get_collision_shape_center(town  ), Utils.get_collision_shape_center(other_town ))
 	for i in range(2):
+		var supply_depo_instance = supply_depo_scene.instantiate() as Area2D
+		supply_depo_instance.global_position = Vector2(randf_range(0, get_viewport().size.x), randf_range(0, get_viewport().size.y))
+		$Structures.add_child(supply_depo_instance)
+	var all_segments = []
+	for i in range(10):
 		var top_point =  Vector2(randi_range(100, get_viewport().size.x  -100), 0)
 		var right_point =  Vector2(  get_viewport().size.x  , randi_range(100,  get_viewport().size.y -100))
 		var left_point =  Vector2( 0 , randi_range(100,  get_viewport().size.y -100 ))
@@ -75,7 +80,23 @@ func _ready():
 	for i in range(6):
 		var forrest_instance = forrest_scene.instantiate() as Node2D
 		$Structures.add_child(forrest_instance)
-#		river_instance.call_deferred("solve_river_intersection")
+
+		
+func instantiate_roads(start, end):
+	var road_instance = road_scene.instantiate() as Node2D
+	var collision_area = road_instance.get_node("Area2D")
+	print(start,end)
+	collision_area.position = Vector2(start + end ) / 2
+	collision_area.rotation = start.direction_to(end).angle()
+	var length = start.distance_to(end)
+	var rect = RectangleShape2D.new()
+	var collision_shape = collision_area.get_node("CollisionShape2D")
+	rect.extents = Vector2(length / 2, 5)
+	collision_shape.shape = rect
+	road_instance.get_node("Line2D").add_point(  end )
+	road_instance.get_node("Line2D").add_point(  start )
+	$Structures.add_child(road_instance)
+
 func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  num_segments:int):
 	var t:float = 0
 	var points = []

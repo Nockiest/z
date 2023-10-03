@@ -41,15 +41,49 @@ func debug(position: Vector2, value):
 	add_child(timer)
 	label.queue_free()
 
+func sort_ascending(a,b):
+	if a >= b:
+		return false
+	else:
+		return true
+
+func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  num_segments:int) -> Array:
+	var points = []
+	var t:float = 0
+	while t <= 1:
+		# Define the control points for the Bézier curve 
+#		var control_point_2 = Vector2(50, 100)
+		var q0 = start.lerp(control_point, t)
+		var q1 = control_point.lerp(end , t)
+		var point = q0.lerp(q1, t)
+		# Generate two random points between the start and end points
+		points.append(point)
+#		print(line.points.size)
+#		if len( points) >= 2:
+#			add_river_segment(points[len( points )-1],  points[len( points)-2],true)
+		t += 1.0/num_segments
+	return points
 ## you have to put this variable wheter you want to put the z_indexes
-#var nodes_list = []
-#func get_z_indexes(node,nodes_list):
-#	if node is CanvasItem:
-#		nodes_list.append([node, node.z_index])
-#	for child in node.get_children():
-#		get_z_indexes(child,nodes_list)
-#func sort_by_z_index_desc(a, b):
-#	return a[1] < b[1]
+var nodes_list = []
+func get_z_indexes(node,nodes_list):
+	if node is CanvasItem:
+		nodes_list.append([node, node.z_index])
+	for child in node.get_children():
+		get_z_indexes(child,nodes_list)
+func sort_by_z_index_desc(a, b):
+	return a[1] < b[1]
+ 
+func get_collision_shape_center(area: Area2D) -> Vector2:
+	var shape = area.get_node("CollisionShape2D").shape 
+	if shape is RectangleShape2D:
+		var rect_shape =  shape  as RectangleShape2D
+		return area.global_position  + Vector2(rect_shape.extents.x, rect_shape.extents.y)
+	elif  shape is CircleShape2D:
+		var circle_shape =  shape as CircleShape2D
+		return  area.global_position 
+	else:
+		assert (false, "Unsupported collision shape type")
+		return Vector2(0, 0)
 
 func play_animation_at_position(animation_node, animation  , position: Vector2) -> void:
 #	var animation = get_node(animation_name)

@@ -6,6 +6,7 @@ var listen_for_river_collision = true
 func _on_area_2d_area_entered(area):
 	
 	## tato funkce potřebuje aby v unit byla area 2d s collision rect
+#	print(area is UnitsMainCollisionArea, " IS IT THE MAIN COLLISION AREA?", area )
 	if area is UnitsMainCollisionArea:
 		print("UNIT ENTERED")
 		if area.get_parent() == Globals.placed_unit:
