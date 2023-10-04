@@ -36,14 +36,10 @@ visibility_layer = 9
 position = Vector2(24.5, 24)
 shape = SubResource("RectangleShape2D_hvkvo")
 
-[node name="movement_comp" parent="." index="6"]
-visible = false
-
 [node name="CollisionShape2D" parent="." index="7"]
 position = Vector2(24.5, 24.25)
 
 [node name="ActionComponent" parent="." index="8"]
-visible = false
 position = Vector2(0, 0)
 
 [node name="HealingAction" parent="ActionComponent" index="0" groups=["SupportActions"] instance=ExtResource("3_sqnr2")]

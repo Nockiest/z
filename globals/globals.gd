@@ -71,7 +71,7 @@ var red_player = {
 var starting_money = 100
 var money_per_turn = 10
 var city_turn_revenue = 10
-
+var min_town_spacing_distance = 200
  
 ## game stats
 #num_turns =  0  

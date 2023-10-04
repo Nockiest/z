@@ -1,7 +1,6 @@
 extends BattleUnit
 class_name SupportUnit
  
-#var supporting_state = false
  
 func move():
 	super.move()
@@ -12,17 +11,12 @@ func _on_support_action_invalid_support():
 	
 func _ready():
 	unit_name = "support_unit"
-#	action_component = support_action  
-#	action_component.support_component_owner = self
-#	support_action.support_component_owner = self
-#	support_action.owner = self
-#	action_component = support_action
 	super._ready()
 ## override for the supper funcion
 func process_action():
-	print("CALLED PROCESS ACTION")
 	#action_component.toggle_action_screen()
 	do_supporting_action()
+	
 func do_supporting_action():
 	if Globals.action_taking_unit == self:
 		action_component.choose_supported()
@@ -36,3 +30,8 @@ func do_supporting_action():
 #	else:
 #		Globals.action_taking_unit = self
 #
+#	action_component = support_action  
+#	action_component.support_component_owner = self
+#	support_action.support_component_owner = self
+#	support_action.owner = self
+#	action_component = support_action

@@ -57,6 +57,9 @@ func _ready():
 	$AttackRangeShape.shape = CircleShape2D.new()
 	$AttackRangeShape.shape.radius = attack_range # * attack_range_modifiers["base_modifier"]
 	$AttackRangeShape.hide()
+#	var parrent_collision_shape = owner.get_node("CollisionArea")
+#	print("XXX", parrent_collision_shape,self)
+#	global_position = Utils.get_collision_shape_center(parrent_collision_shape)
 
 func  update_for_next_turn():
 	remain_actions = base_actions
@@ -68,7 +71,6 @@ func _process(_delta):
 		$AttackRangeShape.hide()
  
 func toggle_action_screen():
-	print("CALLED", Globals.action_taking_unit, owner)
 	if Globals.action_taking_unit == owner:
 		Globals.action_taking_unit = null
 		Globals.attacking_component = null
@@ -76,7 +78,7 @@ func toggle_action_screen():
 		print_debug("1 ", self)
 		return
 	if Globals.hovered_unit != owner:
-		print ("2 ", self,  Globals.hovered_unit)
+		print_debug ("2 ", self,  Globals.hovered_unit)
 		return
 	if Globals.action_taking_unit != null:
 		print_debug("3 ", self)
@@ -88,7 +90,6 @@ func toggle_action_screen():
 		highlight_units_in_range()
 		Globals.attacking_component = self
 	print("ACTION TAKING UNIT", Globals.action_taking_unit)
-	## I will recreate this in the children components
  
 func highlight_units_in_range(): 
 	var other_units = get_tree().get_nodes_in_group("living_units")

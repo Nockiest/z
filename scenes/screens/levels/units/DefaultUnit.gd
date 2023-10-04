@@ -47,6 +47,7 @@ func _ready():
 	center = $CollisionShape2D.global_position +  size/2 
 	print(global_position,self )
 	$ActionComponent.position =   to_local(global_position + Vector2(25,25))# to_local(center) 
+	$ActionComponent.owner = self
 	update_stats_bar()
 	emit_signal("bought", cost)
 	if action_component != null:

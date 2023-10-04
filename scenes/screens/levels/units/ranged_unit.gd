@@ -10,7 +10,7 @@ func _ready():
 	action_component.max_ammo = start_ammo 
 	action_component.ammo = start_ammo 
 	action_component.attack_range = ranged_unit_range
-	action_component.position = to_local(center)
+#	action_component.position = to_local(center)
 	action_component.owner =self
 	super._ready()
 #	attack_range = 300 

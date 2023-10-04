@@ -60,22 +60,38 @@ func _on_area_entered(area):
 	print("UNIT ENTERED TOWN ",  area.get_parent())
 	units_inside.append(area.get_parent())
 	
-func check_overlaps_other_towns():
-	for town in get_tree().get_nodes_in_group("towns"):
-		print("XXX", town.get_overlapping_areas())
-		if town.get_overlapping_areas().has(self):
-			queue_free()
+#func check_overlaps_other_towns():
+#	for town in get_tree().get_nodes_in_group("towns"):
+#		print("XXX", town.get_overlapping_areas())
+#		if town.get_overlapping_areas().has(self):
+#			queue_free()
 func _ready():
-	check_overlaps_other_towns()
+	if not is_far_enough():
+		free()
+		return
+	place_house()
+#	var outline = Utils.area_to_line2d(self, 2)
+# 	add_child(outline)
+#	check_overlaps_other_towns()
+
+func is_far_enough():
+	for town in get_tree().get_nodes_in_group("towns"):
+		if town == self:
+			continue
+		print("DISTANCE " ,Utils.get_collision_shape_center(self  ).distance_to(Utils.get_collision_shape_center(town  ) ))
+		if Utils.get_collision_shape_center(self  ).distance_to(Utils.get_collision_shape_center(town  ) ) <  Globals.min_town_spacing_distance:
+			return false
+	return true
 
 func _on_area_exited(area):
  
-	if not (area is UnitsMainCollisionArea):
-		return
-	if area.get_parent() not in units_inside:
-		return
-	print("UNIT EXITED TOWN ",  area.get_parent(), area,  units_inside )
-	units_inside.erase(area.get_parent())
+#	if not (area is UnitsMainCollisionArea):
+#		return
+#	if area.get_parent() not in units_inside:
+#		return
+#	print("UNIT EXITED TOWN ",  area.get_parent(), area,  units_inside )
+	if area.get_parent() in units_inside:
+		units_inside.erase(area.get_parent())
 		
 func make_next_turn_calculations():
 	check_who_occupied()

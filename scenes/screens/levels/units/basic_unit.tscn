@@ -10,7 +10,7 @@
 size = Vector2(50, 49)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_840qd"]
-size = Vector2(49, 48.5)
+size = Vector2(50, 50)
 
 [node name="basic_unit" type="AnimatableBody2D" groups=["living_units"]]
 z_index = 2

@@ -34,10 +34,11 @@ func _ready():
  
 	for i in range(7):
 		var town_instance = town_scene.instantiate() as Area2D
-		town_instance.global_position = Vector2(randf_range(100, get_viewport().size.x-100), randf_range(100, get_viewport().size.y-100))
+		town_instance.global_position = Vector2(randf_range(0, get_viewport().size.x ), randf_range(0, get_viewport().size.y))
 		$Structures.add_child(town_instance)
 	for town in get_tree().get_nodes_in_group("towns"):
 		town.connect_to_other_towns()
+	print("TOWN NUMBER BEFORE CONNECTING ROADS ",len(get_tree().get_nodes_in_group("towns")))
 	for town in get_tree().get_nodes_in_group("towns"):
 		print("CONNECTING", town.connected_towns)
 		for other_town in town.connected_towns:

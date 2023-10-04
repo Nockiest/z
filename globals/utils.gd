@@ -74,6 +74,7 @@ func sort_by_z_index_desc(a, b):
 	return a[1] < b[1]
  
 func get_collision_shape_center(area: Area2D) -> Vector2:
+	print(area)
 	var shape = area.get_node("CollisionShape2D").shape 
 	if shape is RectangleShape2D:
 		var rect_shape =  shape  as RectangleShape2D
@@ -124,6 +125,28 @@ func lighten_color(color: Color, points: int) -> Color:
 	# Convert the lightened color back to Color format
 	return Color(r / 255.0, g / 255.0, b / 255.0)
  
+## untested
+func area_to_line2d(area: Area2D, width: float) -> Line2D:
+	var line = Line2D.new()
+	line.width = width
+	for shape in area.get_shapes():
+		if shape is CollisionPolygon2D:
+			var points = shape.shape.get_points()
+			for i in range(points.size()):
+				line.add_point(points[i])
+	return line
+
+## tested
+func polygon_to_line2d(polygon: Polygon2D, width: float) -> Line2D:
+	var line = Line2D.new()
+	var vertecies = polygon.get_polygon()
+	vertecies.append(vertecies[0]) ## so the line is circumnavigagting thw whole polygon
+	print(vertecies)
+	line.width = width
+	for i in range( len(vertecies) ):
+		line.add_point(vertecies[i])
+	return line
+
 #func _on_timer_timeout(sprite):
 #    # Remove the Sprite node from the scene tree when the timer times out
 #	sprite.queue_free()

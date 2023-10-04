@@ -21,4 +21,7 @@ func _ready():
 	position = Vector2(randi_range(50, get_viewport().size.x-50) ,randi_range(50, get_viewport().size.y-50))
 	scale = Vector2( randf_range(0.5,1.2), randf_range(0.5,1.2) )
 #	get_node("Polygon2D").modulate = Color("green")
-	get_node("forrest_shape").color = Color(0, 1, 0)
+	get_node("forrest_shape").color = Color("#228b22")
+	var outline = Utils.polygon_to_line2d(forrest_shape_instance, 2)
+	add_child(outline)
+ 
